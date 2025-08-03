@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spanish Flashcards</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #flashcard {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            cursor: pointer;
+            width: 300px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        #flashcard.front {
+            background-color: #e6f3ff; /* Light blue for Spanish (front) */
+        }
+        #flashcard.back {
+            background-color: #e6ffe6; /* Light green for English (back) */
+        }
+        #buttons {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: white;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div id="flashcard" class="front">Click to flip</div>
+    <div id="buttons">
+        <button onclick="speak()">Speak</button>
+        <button onclick="lastCard()">Last</button>
+        <button onclick="nextCard()">Next</button>
+    </div>
+
+    <script>
+        const words = [
+            { spanish: "El deporte", english: "Sport" },
+            { spanish: "El ejercicio físico", english: "Physical exercise" },
+            { spanish: "La gimnasia", english: "Gymnastics" },
+            { spanish: "El entrenamiento", english: "Training" },
+            { spanish: "El fútbol, el balompié", english: "Soccer, football" },
+            { spanish: "El balonmano", english: "Handball" },
+            { spanish: "El voleibol, el balonvolea", english: "Volleyball" },
+            { spanish: "El baloncesto, el básquetbol", english: "Basketball" },
+            { spanish: "El béisbol", english: "Baseball" },
+            { spanish: "El rugby", english: "Rugby" },
+            { spanish: "El hockey sobre hielo", english: "Ice hockey" },
+            { spanish: "El esquí", english: "Skiing" },
+            { spanish: "El patinaje sobre hielo", english: "Ice skating" },
+            { spanish: "Los artes marciales", english: "Martial arts" },
+            { spanish: "El kárate, el karate", english: "Karate" },
+            { spanish: "El judo", english: "Judo" },
+            { spanish: "El boxeo", english: "Boxing" },
+            { spanish: "La esgrima", english: "Fencing" },
+            { spanish: "La natación", english: "Swimming" },
+            { spanish: "El buceo", english: "Diving" },
+            { spanish: "El surf", english: "Surfing" },
+            { spanish: "La vela", english: "Sailing" },
+            { spanish: "La equitación", english: "Horseback riding" },
+            { spanish: "La maratón", english: "Marathon" },
+            { spanish: "La carrera", english: "Race" },
+            { spanish: "El atletismo", english: "Athletics" },
+            { spanish: "El ciclismo", english: "Cycling" },
+            { spanish: "La escalada", english: "Climbing" },
+            { spanish: "El senderismo", english: "Hiking" },
+            { spanish: "El yoga", english: "Yoga" },
+            { spanish: "El golf", english: "Golf" },
+            { spanish: "El tenis", english: "Tennis" },
+            { spanish: "El tenis de mesa, el ping-pong", english: "Table tennis, ping-pong" },
+            { spanish: "El bádminton", english: "Badminton" }
+        ];
+
+        let currentIndex = 0;
+        let showingSpanish = true;
+        const flashcard = document.getElementById('flashcard');
+
+        // Create audio objects for each MP3 file
+        const audioFiles = {};
+        words.forEach((word, index) => {
+            const fileNumber = String(index + 1).padStart(3, '0');
+            audioFiles[word.spanish] = new Audio(`audio/${fileNumber}.mp3`);
+        });
+
+        function updateCard() {
+            flashcard.textContent = showingSpanish ? words[currentIndex].spanish : words[currentIndex].english;
+            flashcard.className = showingSpanish ? 'front' : 'back';
+        }
+
+        function speak() {
+            const spanishWord = words[currentIndex].spanish;
+            audioFiles[spanishWord].play();
+        }
+
+        function nextCard() {
+            currentIndex = (currentIndex + 1) % words.length;
+            showingSpanish = true;
+            updateCard();
+        }
+
+        function lastCard() {
+            currentIndex = (currentIndex - 1 + words.length) % words.length;
+            showingSpanish = true;
+            updateCard();
+        }
+
+        flashcard.addEventListener('click', () => {
+            showingSpanish = !showingSpanish;
+            updateCard();
+        });
+
+        updateCard();
+    </script>
+</body>
+</html>
